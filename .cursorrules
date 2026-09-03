@@ -1,0 +1,31 @@
+# HBuilderX CLI GUI 项目开发规则
+
+## 🎨 UI 视觉规范与受保护组件（严禁擅自修改）
+
+### 1. 顶部 HBuilderX 标题与概览徽标卡片（UI 冻结）
+- **禁止修改** `src/extension.ts` 中 Webview HTML 顶部的 `.header-card` 组件及其关联的所有 CSS 样式与 DOM 结构：
+  ```html
+  <!-- 顶部标题徽标 -->
+  <div class="header-card">
+      <div class="header-title">
+          <svg class="header-logo" viewBox="0 0 24 24">
+              <path d="M 2 2 L 22 2 L 20 19 L 12 22 L 4 19 Z M 7 6.5 V 17 H 9.5 V 13 H 14.5 V 17 H 17 V 6.5 H 14.5 V 10.5 H 9.5 V 6.5 Z"/>
+          </svg>
+          <span>HBuilderX CLI</span>
+      </div>
+      <span class="header-tag">Linux</span>
+  </div>
+  ```
+- **保留关键视觉属性**：
+  - 品牌主色：`--hx-primary: #1A9F35`
+  - 高亮悬浮：`--hx-primary-hover: #22C55E`
+  - 半透明卡片底色：`--hx-primary-bg: rgba(26, 159, 53, 0.12)`
+  - 绿色柔和边框与圆角：`border: 1px solid rgba(26, 159, 53, 0.3); border-radius: 8px;`
+  - 盾牌 SVG 官方矢量徽标与 `Linux / WSL` 胶囊 Tag。
+
+## ⚙️ 架构与模块层级
+1. **账号与全局配置** 必须保持在整个面板的第一顺位（置顶显示）。
+2. **项目与运行** 保持在第二顺位。
+3. **跨端发布与打包** 保持在第三顺位。
+4. 所有操作均需通过 VS Code 标准 `postMessage` 通信并触发对应 `hbuilderx-cli-gui.*` 命令。
+5. **严禁使用任何 Emoji**：严格禁止在 UI、按钮、标题、卡片、提示、控制台输出中使用任何 Emoji 表情符号。保持专业、极简的开发工具质感。

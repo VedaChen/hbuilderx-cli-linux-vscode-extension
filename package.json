@@ -3,7 +3,7 @@
   "displayName": "HBuilderX CLI GUI",
   "description": "HBuilderX Linux CLI 可视化操作工具",
   "version": "0.0.1",
-  "icon": "media/icon.svg",
+  "icon": "media/icon.png",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -20,15 +20,16 @@
         {
           "id": "hbuilderx-cli-sidebar",
           "title": "HBuilderX CLI 控制台",
-          "icon": "media/icon.svg"
+          "icon": "media/icon.png"
         }
       ]
     },
     "views": {
       "hbuilderx-cli-sidebar": [
         {
+          "type": "webview",
           "id": "hx-actions-view",
-          "name": "快捷任务"
+          "name": "HBuilderX CLI 控制台"
         }
       ]
     },
@@ -163,12 +164,12 @@
         "hbuilderx-cli-gui.cliPath": {
           "type": "string",
           "default": "/home/momo/repository/HBuilderX/cli",
-          "description": "HBuilderX CLI 的绝对路径（例如：/home/momo/repository/HBuilderX/cli）"
+          "description": "Linux 平台 HBuilderX CLI 绝对路径（例如：/home/momo/repository/HBuilderX/cli）"
         },
         "hbuilderx-cli-gui.wechatDevToolsPath": {
           "type": "string",
           "default": "",
-          "description": "微信开发者工具可执行文件路径（Windows: C:/Program Files/.../wechatdevtools.exe）"
+          "description": "微信开发者工具可执行文件路径"
         }
       }
     }
