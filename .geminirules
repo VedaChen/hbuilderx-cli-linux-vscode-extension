@@ -23,12 +23,18 @@
   - 绿色柔和边框与圆角：`border: 1px solid rgba(26, 159, 53, 0.3); border-radius: 8px;`
   - 盾牌 SVG 官方矢量徽标与 `Linux` 胶囊 Tag（点击调出 VS Code 原生 QuickPick 官方文档菜单）。
 
-## ⚙️ 架构与模块层级
+## ⚙️ 架构与模块层级（全 Tab 化现代布局）
 1. **账号与全局配置** 保持在整个面板的第一顺位（置顶常驻独立卡片）。
-2. **项目列表** 保持在第二顺位（默认展开，带右上角打开项目、刷新、每项独立移除）。
-3. **运行** 保持在第三顺位（目标项目选择 + 官方平台网格，严格对应官方 IDE 运行菜单）。
-4. **发行** 保持在第四顺位（目标项目选择 + 官方发行平台与打包网格，严格对应官方 IDE 发行菜单）。
-5. 所有操作均需通过 VS Code 标准 `postMessage` 通信。
-6. **严禁使用任何 Emoji**：严格禁止在 UI、按钮、标题、卡片、提示、控制台输出中使用任何 Emoji 表情符号。保持专业、极简的开发工具质感。
-7. **官方 CLI 文档权威参考目录**：
-   所有关于 HBuilderX Linux CLI 的指令、参数、语法、子命令（`launch`、`publish`、`pack`、`project`、`user`、`logcat`、`uts` 等），必须直接读取并严格参照本地克隆的官方文档目录：`/home/momo/pro/hbuilderx-extension-docs/zh-cn/cli`。
+2. **全局目标工程总控** 保持在第二顺位（单个统一下拉框，全局联动生效）。
+3. **水平分段标签栏 (Tabs)**：
+   - `项目`（工程列表、打开项目、刷新、独立移除）
+   - `运行`（17 个官方运行平台网格）
+   - `发行`（官方跨端发布与打包网格）
+   - `日志`（打包与运行时日志追踪）
+   - `设备`（可用设备列表与真机/Web截图）
+   - `云开发`（uniCloud 云函数、公共模块、Schema）
+   - `插件/UTS`（uni_modules 生态与 UTS 插件独立编译）
+4. 所有操作均需通过 VS Code 标准 `postMessage` 通信。
+5. **严禁使用任何 Emoji**：严格禁止在 UI、按钮、标题、卡片、提示、控制台输出中使用任何 Emoji 表情符号。保持专业、极简的开发工具质感。
+6. **官方 CLI 文档权威参考目录**：
+   所有关于 HBuilderX Linux CLI 的指令、参数、语法、子命令（`launch`、`publish`、`pack`、`project`、`user`、`logcat`、`devices`、`screencap`、`unicloud`、`uni_modules`、`uts` 等），必须直接读取并严格参照本地克隆的官方文档目录：`/home/momo/pro/hbuilderx-extension-docs/zh-cn/cli`。

@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { getWebviewContent } from './template';
-import { ProjectService, HBuilderProject } from '../service/projectService';
+import { ProjectService, HBuilderProject, getProjectPathsFromIniAsync } from '../service/projectService';
 import { UserService } from '../service/userService';
 import { CliRunner } from '../service/cliRunner';
 
@@ -8,6 +8,7 @@ export class HBuilderWebviewProvider implements vscode.WebviewViewProvider {
 	private _view?: vscode.WebviewView;
 	private _projects: HBuilderProject[] = [];
 	private _selectedTargetProject?: string;
+	private _selectedTab = 'tab-projects';
 	private _lastProjectsHash = '';
 	private _pollInterval?: NodeJS.Timeout;
 	private _hasLaunchedApp = false;
@@ -103,12 +104,27 @@ export class HBuilderWebviewProvider implements vscode.WebviewViewProvider {
 						this._selectedTargetProject = message.target;
 					}
 					break;
-				case 'launchProject':
-					if (message.target && message.platform) {
+				case 'selectTab':
+					if (message.tab) {
+						this._selectedTab = message.tab;
+					}
+					break;
+				case 'executeGenericAction':
+					if (message.template) {
+						const targetName = message.target || '';
+						let rawCmd = message.template;
+						if (rawCmd.includes('__PROJECT__')) {
+							rawCmd = rawCmd.replace(/__PROJECT__/g, targetName);
+						}
+						if (rawCmd.includes('__PROJECT_PATH__')) {
+							const pathMap = await getProjectPathsFromIniAsync();
+							const pPath = pathMap.get(targetName) || targetName;
+							rawCmd = rawCmd.replace(/__PROJECT_PATH__/g, pPath);
+						}
 						CliRunner.runInTerminal(
-							`launch ${message.platform} --project "${message.target}"`,
+							rawCmd,
 							undefined,
-							`运行到 ${message.platform}`
+							message.title || '执行操作'
 						);
 					}
 					break;
@@ -135,15 +151,6 @@ export class HBuilderWebviewProvider implements vscode.WebviewViewProvider {
 							vscode.env.openExternal(vscode.Uri.parse(selected.url));
 						}
 					});
-					break;
-				case 'executePublish':
-					if (message.rawCommand) {
-						CliRunner.runInTerminal(
-							message.rawCommand,
-							undefined,
-							message.title || '执行发行'
-						);
-					}
 					break;
 				case 'openSettings':
 					vscode.commands.executeCommand('workbench.action.openSettings', 'hbuilderx-cli-gui');
@@ -172,7 +179,7 @@ export class HBuilderWebviewProvider implements vscode.WebviewViewProvider {
 		this._lastProjectsHash = newHash;
 
 		if (this._view) {
-			this._view.webview.html = getWebviewContent(this._projects, this._selectedTargetProject);
+			this._view.webview.html = getWebviewContent(this._projects, this._selectedTargetProject, this._selectedTab);
 		}
 	}
 
