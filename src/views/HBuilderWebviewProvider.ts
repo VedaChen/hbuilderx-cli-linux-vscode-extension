@@ -106,14 +106,52 @@ export class HBuilderWebviewProvider implements vscode.WebviewViewProvider {
 				case 'launchProject':
 					if (message.target && message.platform) {
 						CliRunner.runInTerminal(
-							`launch --platform ${message.platform} --project "${message.target}"`,
+							`launch ${message.platform} --project "${message.target}"`,
 							undefined,
 							`运行到 ${message.platform}`
 						);
 					}
 					break;
+				case 'showGuide':
+					const guideItems = [
+						{
+							label: '官方CLI文档 (官网)',
+							description: 'https://hx.dcloud.net.cn/cli/README',
+							detail: 'DCloud 官方 Linux CLI 完整手册',
+							url: 'https://hx.dcloud.net.cn/cli/README'
+						},
+						{
+							label: '官方CLI文档 (GitHub)',
+							description: 'github.com/dcloudio/hbuilderx-extension-docs',
+							detail: 'GitHub 开源文档仓库 (zh-cn/cli)',
+							url: 'https://github.com/dcloudio/hbuilderx-extension-docs/blob/master/zh-cn/cli/README.md'
+						}
+					];
+					vscode.window.showQuickPick(guideItems, {
+						title: 'HBuilderX 官方 CLI 帮助与引导',
+						placeHolder: '选择要打开的官方文档...'
+					}).then((selected) => {
+						if (selected && selected.url) {
+							vscode.env.openExternal(vscode.Uri.parse(selected.url));
+						}
+					});
+					break;
+				case 'executePublish':
+					if (message.rawCommand) {
+						CliRunner.runInTerminal(
+							message.rawCommand,
+							undefined,
+							message.title || '执行发行'
+						);
+					}
+					break;
 				case 'openSettings':
 					vscode.commands.executeCommand('workbench.action.openSettings', 'hbuilderx-cli-gui');
+					break;
+				case 'openExternal':
+					if (message.url) {
+						vscode.env.openExternal(vscode.Uri.parse(message.url));
+					}
 					break;
 				case 'refresh':
 					await this.refresh(true);

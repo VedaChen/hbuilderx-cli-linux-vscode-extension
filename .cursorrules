@@ -2,8 +2,8 @@
 
 ## 🎨 UI 视觉规范与受保护组件（严禁擅自修改）
 
-### 1. 顶部 HBuilderX 标题与概览徽标卡片（UI 冻结）
-- **禁止修改** `src/extension.ts` 中 Webview HTML 顶部的 `.header-card` 组件及其关联的所有 CSS 样式与 DOM 结构：
+### 1. 顶部 HBuilderX 标题与概览徽标卡片
+- 保持 Webview HTML 顶部的 `.header-card` 品牌徽标结构：
   ```html
   <!-- 顶部标题徽标 -->
   <div class="header-card">
@@ -13,7 +13,7 @@
           </svg>
           <span>HBuilderX CLI</span>
       </div>
-      <span class="header-tag">Linux</span>
+      <span class="header-tag" onclick="sendAction('showGuide')" title="点击查看帮助与官方引导">Linux</span>
   </div>
   ```
 - **保留关键视觉属性**：
@@ -21,11 +21,14 @@
   - 高亮悬浮：`--hx-primary-hover: #22C55E`
   - 半透明卡片底色：`--hx-primary-bg: rgba(26, 159, 53, 0.12)`
   - 绿色柔和边框与圆角：`border: 1px solid rgba(26, 159, 53, 0.3); border-radius: 8px;`
-  - 盾牌 SVG 官方矢量徽标与 `Linux / WSL` 胶囊 Tag。
+  - 盾牌 SVG 官方矢量徽标与 `Linux` 胶囊 Tag（点击调出 VS Code 原生 QuickPick 官方文档菜单）。
 
 ## ⚙️ 架构与模块层级
-1. **账号与全局配置** 必须保持在整个面板的第一顺位（置顶显示）。
-2. **项目与运行** 保持在第二顺位。
-3. **跨端发布与打包** 保持在第三顺位。
-4. 所有操作均需通过 VS Code 标准 `postMessage` 通信并触发对应 `hbuilderx-cli-gui.*` 命令。
-5. **严禁使用任何 Emoji**：严格禁止在 UI、按钮、标题、卡片、提示、控制台输出中使用任何 Emoji 表情符号。保持专业、极简的开发工具质感。
+1. **账号与全局配置** 保持在整个面板的第一顺位（置顶常驻独立卡片）。
+2. **项目列表** 保持在第二顺位（默认展开，带右上角打开项目、刷新、每项独立移除）。
+3. **运行** 保持在第三顺位（目标项目选择 + 官方平台网格，严格对应官方 IDE 运行菜单）。
+4. **发行** 保持在第四顺位（目标项目选择 + 官方发行平台与打包网格，严格对应官方 IDE 发行菜单）。
+5. 所有操作均需通过 VS Code 标准 `postMessage` 通信。
+6. **严禁使用任何 Emoji**：严格禁止在 UI、按钮、标题、卡片、提示、控制台输出中使用任何 Emoji 表情符号。保持专业、极简的开发工具质感。
+7. **官方 CLI 文档权威参考目录**：
+   所有关于 HBuilderX Linux CLI 的指令、参数、语法、子命令（`launch`、`publish`、`pack`、`project`、`user`、`logcat`、`uts` 等），必须直接读取并严格参照本地克隆的官方文档目录：`/home/momo/pro/hbuilderx-extension-docs/zh-cn/cli`。

@@ -3,16 +3,14 @@
   "displayName": "HBuilderX CLI GUI",
   "description": "HBuilderX Linux CLI 可视化操作工具",
   "version": "0.0.1",
-  "icon": "media/icon.png",
+  "icon": "media/icon.svg",
   "engines": {
     "vscode": "^1.85.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onView:hx-actions-view"
-  ],
+  "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
     "viewsContainers": {
@@ -20,7 +18,7 @@
         {
           "id": "hbuilderx-cli-sidebar",
           "title": "HBuilderX CLI 控制台",
-          "icon": "media/icon.png"
+          "icon": "media/icon.svg"
         }
       ]
     },

@@ -12,12 +12,110 @@ export interface LaunchPlatformMeta {
 
 export const LAUNCH_PLATFORMS: LaunchPlatformMeta[] = [
 	{ id: 'web', name: '运行到浏览器 (Web)', badge: 'web' },
-	{ id: 'mp-weixin', name: '微信小程序模拟器', badge: 'mp-weixin' },
-	{ id: 'mp-alipay', name: '支付宝小程序模拟器', badge: 'mp-alipay' },
-	{ id: 'mp-toutiao', name: '抖音小程序模拟器', badge: 'mp-toutiao' },
-	{ id: 'mp-baidu', name: '百度小程序模拟器', badge: 'mp-baidu' },
 	{ id: 'app-android', name: 'Android 真机 / 模拟器', badge: 'app-android' },
-	{ id: 'app-ios', name: 'iOS 真机 / 模拟器', badge: 'app-ios' }
+	{ id: 'app-ios', name: 'iOS 真机 / 模拟器', badge: 'app-ios' },
+	{ id: 'app-harmony', name: '鸿蒙真机 / 模拟器', badge: 'app-harmony' },
+	{ id: 'mp-weixin', name: '微信小程序', badge: 'mp-weixin' },
+	{ id: 'mp-alipay', name: '支付宝小程序', badge: 'mp-alipay' },
+	{ id: 'mp-toutiao', name: '抖音小程序', badge: 'mp-toutiao' },
+	{ id: 'mp-baidu', name: '百度小程序', badge: 'mp-baidu' },
+	{ id: 'mp-kuaishou', name: '快手小程序', badge: 'mp-kuaishou' },
+	{ id: 'mp-lark', name: '飞书小程序', badge: 'mp-lark' },
+	{ id: 'mp-xhs', name: '小红书小程序', badge: 'mp-xhs' },
+	{ id: 'mp-qq', name: 'QQ 小程序', badge: 'mp-qq' },
+	{ id: 'mp-jd', name: '京东小程序', badge: 'mp-jd' },
+	{ id: 'mp-360', name: '360 小程序', badge: 'mp-360' },
+	{ id: 'mp-harmony', name: '鸿蒙元服务', badge: 'mp-harmony' },
+	{ id: 'quickapp-webview-huawei', name: '快应用 (华为)', badge: 'quickapp-webview-huawei' },
+	{ id: 'quickapp-webview-union', name: '快应用 (联盟)', badge: 'quickapp-webview-union' }
+];
+
+export interface PublishPlatformMeta {
+	id: string;
+	name: string;
+	badge: string;
+	commandTemplate: string;
+}
+
+export const PUBLISH_PLATFORMS: PublishPlatformMeta[] = [
+	{
+		id: 'publish-h5',
+		name: '网站 - PC Web 或 手机 H5',
+		badge: 'publish h5',
+		commandTemplate: 'publish h5 --project "__PROJECT__"'
+	},
+	{
+		id: 'publish-mp-weixin',
+		name: '小程序 - 微信',
+		badge: 'publish mp-weixin',
+		commandTemplate: 'publish mp-weixin --project "__PROJECT__"'
+	},
+	{
+		id: 'publish-mp-alipay',
+		name: '小程序 - 支付宝',
+		badge: 'publish mp-alipay',
+		commandTemplate: 'publish mp-alipay --project "__PROJECT__"'
+	},
+	{
+		id: 'publish-app-android-wgt',
+		name: '制作应用 wgt 包 (Android)',
+		badge: 'publish app-android --type wgt',
+		commandTemplate: 'publish app-android --type wgt --project "__PROJECT__"'
+	},
+	{
+		id: 'publish-app-ios-wgt',
+		name: '制作应用 wgt 包 (iOS)',
+		badge: 'publish app-ios --type wgt',
+		commandTemplate: 'publish app-ios --type wgt --project "__PROJECT__"'
+	},
+	{
+		id: 'publish-app-harmony-wgt',
+		name: '制作应用 wgt 包 (鸿蒙)',
+		badge: 'publish app-harmony --type wgt',
+		commandTemplate: 'publish app-harmony --type wgt --project "__PROJECT__"'
+	},
+	{
+		id: 'publish-app-android-resource',
+		name: '生成本地打包 App 资源 (Android)',
+		badge: 'publish app-android --type appResource',
+		commandTemplate: 'publish app-android --type appResource --project "__PROJECT__"'
+	},
+	{
+		id: 'publish-app-ios-resource',
+		name: '生成本地打包 App 资源 (iOS)',
+		badge: 'publish app-ios --type appResource',
+		commandTemplate: 'publish app-ios --type appResource --project "__PROJECT__"'
+	},
+	{
+		id: 'publish-app-harmony-resource',
+		name: '生成本地打包 App 资源 (鸿蒙)',
+		badge: 'publish app-harmony --type appResource',
+		commandTemplate: 'publish app-harmony --type appResource --project "__PROJECT__"'
+	},
+	{
+		id: 'pack-android',
+		name: '原生 App - Android 云打包',
+		badge: 'pack --platform android',
+		commandTemplate: 'pack --platform android --project "__PROJECT__"'
+	},
+	{
+		id: 'pack-ios',
+		name: '原生 App - iOS 云打包',
+		badge: 'pack --platform ios',
+		commandTemplate: 'pack --platform ios --project "__PROJECT__"'
+	},
+	{
+		id: 'pack-app-harmony',
+		name: 'App - 鸿蒙本地打包',
+		badge: 'pack app-harmony',
+		commandTemplate: 'pack app-harmony --project "__PROJECT__"'
+	},
+	{
+		id: 'pack-mp-harmony',
+		name: '鸿蒙元服务本地打包',
+		badge: 'pack mp-harmony',
+		commandTemplate: 'pack mp-harmony --project "__PROJECT__"'
+	}
 ];
 
 export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget?: string): string {
@@ -91,11 +189,18 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 
 		.header-tag {
 			font-size: 11px;
-			padding: 2px 6px;
+			padding: 2px 8px;
 			border-radius: 4px;
 			background: rgba(26, 159, 53, 0.2);
 			color: var(--hx-primary-hover);
-			font-weight: normal;
+			font-weight: 500;
+			cursor: pointer;
+			transition: all 0.15s ease;
+		}
+
+		.header-tag:hover {
+			background: rgba(26, 159, 53, 0.35);
+			transform: scale(1.04);
 		}
 
 		/* 通用模块样式 */
@@ -311,7 +416,7 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 			padding: 8px;
 		}
 
-		/* 目标选择器与运行平台卡片 */
+		/* 目标选择器与运行/发行平台卡片 */
 		.target-select-box {
 			display: flex;
 			align-items: center;
@@ -435,7 +540,7 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 			</svg>
 			<span>HBuilderX CLI</span>
 		</div>
-		<span class="header-tag">Linux</span>
+		<span class="header-tag" onclick="sendAction('showGuide')" title="点击查看帮助与官方引导">Linux</span>
 	</div>
 
 	<!-- 1. 账号与全局配置模块（置顶常驻独立卡片） -->
@@ -510,10 +615,10 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 		</div>
 	</details>
 
-	<!-- 3. 运行与本地调试 (Run / Dev) -->
+	<!-- 3. 运行 -->
 	<details class="accordion-group" open>
 		<summary class="accordion-header">
-			<span>运行与本地调试 (Run / Dev)</span>
+			<span>运行</span>
 		</summary>
 		<div class="accordion-content">
 			<!-- 目标工程选择器 -->
@@ -523,9 +628,8 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 					${projects.length === 0
 						? `<option value="">(暂无已导入项目，请先打开项目)</option>`
 						: projects.map((p) => {
-								const val = p.path || p.name;
-								const isSelected = val === defaultTarget || p.name === defaultTarget;
-								return `<option value="${val}" ${isSelected ? 'selected' : ''}>${p.name}${p.type ? ' [' + p.type + ']' : ''}</option>`;
+								const isSelected = p.name === defaultTarget || (p.path && p.path === defaultTarget);
+								return `<option value="${p.name}" ${isSelected ? 'selected' : ''}>${p.name}${p.type ? ' [' + p.type + ']' : ''}</option>`;
 						  }).join('')
 					}
 				</select>
@@ -543,9 +647,42 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 		</div>
 	</details>
 
+	<!-- 4. 发行 -->
+	<details class="accordion-group" open>
+		<summary class="accordion-header">
+			<span>发行</span>
+		</summary>
+		<div class="accordion-content">
+			<!-- 目标工程选择器 -->
+			<div class="target-select-box">
+				<div class="target-label">目标项目:</div>
+				<select id="target-project-publish-select" class="hbx-select" onchange="handleTargetChange(this.value)">
+					${projects.length === 0
+						? `<option value="">(暂无已导入项目，请先打开项目)</option>`
+						: projects.map((p) => {
+								const isSelected = p.name === defaultTarget || (p.path && p.path === defaultTarget);
+								return `<option value="${p.name}" ${isSelected ? 'selected' : ''}>${p.name}${p.type ? ' [' + p.type + ']' : ''}</option>`;
+						  }).join('')
+					}
+				</select>
+			</div>
+
+			<!-- 发行平台网格 -->
+			<div class="launch-grid">
+				${PUBLISH_PLATFORMS.map((platform) => `
+					<button class="launch-btn" onclick="publishTarget('${platform.id}')" title="发行: ${platform.name}">
+						<div class="launch-name">${platform.name}</div>
+						<div class="launch-badge">${platform.badge}</div>
+					</button>
+				`).join('')}
+			</div>
+		</div>
+	</details>
+
 	<script>
 		const vscode = acquireVsCodeApi();
 		const isLoggedIn = ${isLoggedIn ? 'true' : 'false'};
+		const PUBLISH_MAP = ${JSON.stringify(PUBLISH_PLATFORMS)};
 
 		function sendAction(command, action) {
 			vscode.postMessage({
@@ -628,7 +765,29 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 			});
 		}
 
+		function publishTarget(platformId) {
+			const selectEl = document.getElementById('target-project-publish-select') || document.getElementById('target-project-select');
+			const targetVal = selectEl ? selectEl.value : '';
+			if (!targetVal) {
+				alert('请先导入或选择一个目标项目');
+				return;
+			}
+			const found = PUBLISH_MAP.find(p => p.id === platformId);
+			if (found) {
+				const cmd = found.commandTemplate.replace('__PROJECT__', targetVal);
+				vscode.postMessage({
+					command: 'executePublish',
+					rawCommand: cmd,
+					title: '发行: ' + found.name
+				});
+			}
+		}
+
 		function handleTargetChange(val) {
+			const select1 = document.getElementById('target-project-select');
+			const select2 = document.getElementById('target-project-publish-select');
+			if (select1) select1.value = val;
+			if (select2) select2.value = val;
 			vscode.postMessage({
 				command: 'selectTargetProject',
 				target: val

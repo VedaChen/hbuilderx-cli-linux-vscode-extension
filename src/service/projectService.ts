@@ -238,8 +238,9 @@ export class ProjectService {
 
 	public static launchWeb(): void {
 		const projectPath = CliRunner.getCurrentWorkspacePath();
-		if (projectPath) {
-			CliRunner.runInTerminal('launch --platform web --project __PROJECT_PATH__', projectPath, '运行到 Web');
+		const projName = projectPath ? path.basename(projectPath) : undefined;
+		if (projName) {
+			CliRunner.runInTerminal(`launch web --project "${projName}"`, undefined, '运行到 Web');
 		} else {
 			vscode.window.showWarningMessage('请先在 VS Code 中打开一个工作区项目');
 		}
@@ -247,8 +248,9 @@ export class ProjectService {
 
 	public static launchAndroid(): void {
 		const projectPath = CliRunner.getCurrentWorkspacePath();
-		if (projectPath) {
-			CliRunner.runInTerminal('launch --platform android --project __PROJECT_PATH__', projectPath, '运行到 Android');
+		const projName = projectPath ? path.basename(projectPath) : undefined;
+		if (projName) {
+			CliRunner.runInTerminal(`launch app-android --project "${projName}"`, undefined, '运行到 Android');
 		} else {
 			vscode.window.showWarningMessage('请先在 VS Code 中打开一个工作区项目');
 		}
