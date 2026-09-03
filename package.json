@@ -3,6 +3,7 @@
   "displayName": "HBuilderX CLI GUI",
   "description": "HBuilderX Linux CLI 可视化操作工具",
   "version": "0.0.1",
+  "publisher": "momo",
   "icon": "resources/icon.png",
   "engines": {
     "vscode": "^1.85.0"
@@ -190,7 +191,7 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.136.0",
+    "@types/vscode": "^1.85.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "24.x",
     "typescript-eslint": "^8.61.1",

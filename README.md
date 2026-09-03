@@ -1,72 +1,27 @@
-# hbuilderx-cli-gui README
+# HBuilderX CLI GUI (VS Code Extension)
 
-This is the README for your extension "hbuilderx-cli-gui". After writing up a brief description, we recommend including the following sections.
+HBuilderX Linux CLI 可视化操作与工程管理扩展，让您在 VS Code 中无缝调用 DCloud HBuilderX CLI 工具链。
 
-## Features
+## 功能特性 (Features)
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- **工程管理**：一键导入 VS Code 当前工作区或指定目录到 HBuilderX，多项目快速切换与管理。
+- **全平台编译与运行**：支持 Web / H5、Android、iOS、鸿蒙以及各大平台小程序（微信、支付宝、抖音、百度等）的一键调试与运行。
+- **项目发行与打包**：提供 H5 发行、各端小程序发行、wgt 制作与 App 原生打包等完整流程。
+- **uni_modules 插件市场与安装**：内置 DCloud 插件市场与 UTS 模块支持，支持普通安装与 `--force` 强制安装。
+- **用户账号管理**：支持与 HBuilderX CLI 鉴权状态双向同步，提供登录、登出及状态检测。
+- **云开发与日志**：支持 uniCloud 云函数操作、数据表管理及运行日志实时捕获。
 
-For example if there is an image subfolder under your extension project workspace:
+## 环境要求 (Requirements)
 
-\!\[feature X\]\(images/feature-x.png\)
+- 已安装 HBuilderX 4.0+ 或 5.0+（支持 Linux CLI）。
+- 配置 HBuilderX CLI 绝对路径（例如 `/opt/HBuilderX/cli` 或 `/home/username/repository/HBuilderX/cli`）。
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## 配置项 (Extension Settings)
 
-## Requirements
+- `hbuilderx-cli-gui.cliPath`: HBuilderX CLI 可执行文件的绝对路径。
+- `hbuilderx-cli-gui.wechatDevToolsPath`: 微信开发者工具可执行文件路径（可选）。
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## 协议 (License)
 
-## Extension Settings
+MIT License
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
-# hbuilderx-cli-linux-vscode-extension
