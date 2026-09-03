@@ -1,0 +1,82 @@
+{
+  "version": "2.0.0",
+  "windows": {
+    "options": {
+      "shell": {
+        "executable": "C:\\Windows\\System32\\wsl.exe",
+        "args": ["--"]
+      }
+    }
+  },
+  "tasks": [
+    {
+      "label": "watch",
+      "dependsOn": [
+        "watch:tsc",
+        "watch:esbuild"
+      ],
+      "presentation": {
+        "reveal": "never"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "type": "shell",
+      "command": "pnpm run watch:esbuild",
+      "group": "build",
+      "problemMatcher": {
+        "owner": "custom-esbuild",
+        "fileLocation": "relative",
+        "pattern": {
+          "regexp": "^\\[watch\\] build (finished|started)"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^\\[watch\\] build started",
+          "endsPattern": "^\\[watch\\] build finished"
+        }
+      },
+      "isBackground": true,
+      "label": "watch:esbuild",
+      "presentation": {
+        "group": "watch",
+        "reveal": "never"
+      }
+    },
+    {
+      "type": "shell",
+      "command": "pnpm run watch:tsc",
+      "group": "build",
+      "problemMatcher": "$tsc-watch",
+      "isBackground": true,
+      "label": "watch:tsc",
+      "presentation": {
+        "group": "watch",
+        "reveal": "never"
+      }
+    },
+    {
+      "type": "shell",
+      "command": "pnpm run watch-tests",
+      "problemMatcher": "$tsc-watch",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "never",
+        "group": "watchers"
+      },
+      "label": "watch-tests",
+      "group": "build"
+    },
+    {
+      "label": "tasks: watch-tests",
+      "dependsOn": [
+        "watch",
+        "watch-tests"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}

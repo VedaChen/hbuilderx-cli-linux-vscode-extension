@@ -1,0 +1,208 @@
+{
+  "name": "hbuilderx-cli-gui",
+  "displayName": "HBuilderX CLI GUI",
+  "description": "HBuilderX Linux CLI 可视化操作工具",
+  "version": "0.0.1",
+  "icon": "media/icon.svg",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:hx-actions-view"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "hbuilderx-cli-sidebar",
+          "title": "HBuilderX CLI 控制台",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "hbuilderx-cli-sidebar": [
+        {
+          "id": "hx-actions-view",
+          "name": "快捷任务"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "hbuilderx-cli-gui.refresh",
+        "title": "刷新面板",
+        "icon": "$(refresh)",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.openSettings",
+        "title": "打开设置",
+        "icon": "$(gear)",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.openProject",
+        "title": "打开项目",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.publishWechat",
+        "title": "发布到微信小程序 (mp-weixin)",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.publishAlipay",
+        "title": "发布到支付宝小程序 (mp-alipay)",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.publishBaidu",
+        "title": "发布到百度小程序 (mp-baidu)",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.publishToutiao",
+        "title": "发布到抖音小程序 (mp-toutiao)",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.publishLark",
+        "title": "发布到飞书小程序 (mp-lark)",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.publishQQ",
+        "title": "发布到QQ小程序 (mp-qq)",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.publishKuaishou",
+        "title": "发布到快手小程序 (mp-kuaishou)",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.publishJD",
+        "title": "发布到京东小程序 (mp-jd)",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.publishH5",
+        "title": "发布到H5/Web",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.publishAppAndroid",
+        "title": "发布到App (Android 打包资源)",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.publishAppIos",
+        "title": "发布到App (iOS 打包资源)",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.userLogin",
+        "title": "用户登录",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.userLogout",
+        "title": "用户登出",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.userInfo",
+        "title": "查看用户信息",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.projectList",
+        "title": "列出已导入项目",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.launchWeb",
+        "title": "运行到Web (HBuilderX 5.0+)",
+        "category": "HBuilderX"
+      },
+      {
+        "command": "hbuilderx-cli-gui.launchAndroid",
+        "title": "运行到Android App (HBuilderX 5.0+)",
+        "category": "HBuilderX"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "hbuilderx-cli-gui.refresh",
+          "when": "view == hx-actions-view",
+          "group": "navigation@1"
+        },
+        {
+          "command": "hbuilderx-cli-gui.openSettings",
+          "when": "view == hx-actions-view",
+          "group": "navigation@2"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "hbuilderx-cli-gui.openProject",
+          "group": "navigation",
+          "when": "explorerResourceIsFolder"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "HBuilderX CLI",
+      "properties": {
+        "hbuilderx-cli-gui.cliPath": {
+          "type": "string",
+          "default": "/home/momo/repository/HBuilderX/cli",
+          "description": "HBuilderX CLI 的绝对路径（例如：/home/momo/repository/HBuilderX/cli）"
+        },
+        "hbuilderx-cli-gui.wechatDevToolsPath": {
+          "type": "string",
+          "default": "",
+          "description": "微信开发者工具可执行文件路径（Windows: C:/Program Files/.../wechatdevtools.exe）"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "dev": "npm-run-all -p watch:esbuild launch",
+    "launch": "node scripts/launch.js",
+    "vscode:prepublish": "pnpm run package",
+    "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.136.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "24.x",
+    "typescript-eslint": "^8.61.1",
+    "eslint": "^10.5.0",
+    "esbuild": "^0.28.1",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^6.0.3",
+    "@vscode/test-cli": "^0.0.15",
+    "@vscode/test-electron": "^3.0.0"
+  },
+  "overrides": {
+    "diff": "^8.0.4",
+    "serialize-javascript": "^7.0.6"
+  }
+}
