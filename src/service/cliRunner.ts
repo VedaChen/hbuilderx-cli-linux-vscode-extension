@@ -41,6 +41,10 @@ export class CliRunner {
 	}
 
 	public static execAsync(args: string, projectPath?: string): Promise<string> {
+		const cliPath = AppConfig.getCliPath();
+		if (!cliPath) {
+			return Promise.reject(new Error('CLI path is not configured'));
+		}
 		const { cmd } = this.getCliCommand(args, projectPath);
 		return new Promise((resolve, reject) => {
 			exec(cmd, { encoding: 'utf8' }, (error, stdout, stderr) => {
@@ -69,6 +73,16 @@ export class CliRunner {
 	}
 
 	public static runInTerminal(args: string, projectPath?: string, title?: string): void {
+		const cliPath = AppConfig.getCliPath();
+		if (!cliPath) {
+			vscode.window.showWarningMessage('请先配置 HBuilderX CLI 绝对路径', '打开设置').then((choice) => {
+				if (choice === '打开设置') {
+					vscode.commands.executeCommand('workbench.action.openSettings', 'hbuilderx-cli-gui.cliPath');
+				}
+			});
+			return;
+		}
+
 		if (!this.terminal || this.terminal.exitStatus !== undefined) {
 			this.terminal = vscode.window.createTerminal({
 				name: 'HBuilderX CLI',

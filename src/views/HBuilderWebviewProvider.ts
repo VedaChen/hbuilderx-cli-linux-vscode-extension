@@ -128,8 +128,26 @@ export class HBuilderWebviewProvider implements vscode.WebviewViewProvider {
 						);
 					}
 					break;
+				case 'openTutorial':
+					const tutorialUri = vscode.Uri.joinPath(this._extensionUri, 'docs', 'tutorial.md');
+					vscode.commands.executeCommand('markdown.showPreview', tutorialUri).then(undefined, () => {
+						vscode.commands.executeCommand('vscode.open', tutorialUri);
+					});
+					break;
 				case 'showGuide':
 					const guideItems = [
+						{
+							label: 'CLI 安装与配置教程 (本地 Markdown)',
+							description: 'docs/tutorial.md',
+							detail: '查看扩展内置的 Markdown 安装与配置教程',
+							action: 'openTutorial'
+						},
+						{
+							label: '官方下载与安装教程 (官网)',
+							description: 'https://hx.dcloud.net.cn/Tutorial/install/linux-cli',
+							detail: 'DCloud 官方 Linux CLI 下载与环境配置教程',
+							url: 'https://hx.dcloud.net.cn/Tutorial/install/linux-cli'
+						},
 						{
 							label: '官方CLI文档 (官网)',
 							description: 'https://hx.dcloud.net.cn/cli/README',
@@ -145,10 +163,17 @@ export class HBuilderWebviewProvider implements vscode.WebviewViewProvider {
 					];
 					vscode.window.showQuickPick(guideItems, {
 						title: 'HBuilderX 官方 CLI 帮助与引导',
-						placeHolder: '选择要打开的官方文档...'
+						placeHolder: '选择要打开的文档或教程...'
 					}).then((selected) => {
-						if (selected && selected.url) {
-							vscode.env.openExternal(vscode.Uri.parse(selected.url));
+						if (selected) {
+							if (selected.action === 'openTutorial') {
+								const tUri = vscode.Uri.joinPath(this._extensionUri, 'docs', 'tutorial.md');
+								vscode.commands.executeCommand('markdown.showPreview', tUri).then(undefined, () => {
+									vscode.commands.executeCommand('vscode.open', tUri);
+								});
+							} else if (selected.url) {
+								vscode.env.openExternal(vscode.Uri.parse(selected.url));
+							}
 						}
 					});
 					break;

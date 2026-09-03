@@ -161,8 +161,8 @@
       "properties": {
         "hbuilderx-cli-gui.cliPath": {
           "type": "string",
-          "default": "/home/momo/repository/HBuilderX/cli",
-          "description": "Linux 平台 HBuilderX CLI 绝对路径（例如：/home/momo/repository/HBuilderX/cli）"
+          "default": "",
+          "description": "Linux 平台 HBuilderX CLI 绝对路径（例如：/opt/HBuilderX/cli 或 /home/username/repository/HBuilderX/cli）"
         },
         "hbuilderx-cli-gui.wechatDevToolsPath": {
           "type": "string",

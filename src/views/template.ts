@@ -581,8 +581,8 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 					</button>
 				</div>
 			</div>
-			<div class="cli-path-box" title="${cliPath}">
-				${cliPath}
+			<div class="cli-path-box" title="${cliPath || '未配置 CLI 路径'}">
+				${cliPath ? cliPath : `<span>未配置 CLI 路径，点击右上角【设置】进行配置。查看教程：</span><span class="link-btn" onclick="sendAction('openTutorial')">教程</span>`}
 			</div>
 
 			<!-- 内嵌登录输入表单 -->
@@ -698,10 +698,11 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 		const isLoggedIn = ${isLoggedIn ? 'true' : 'false'};
 		const ALL_COMMANDS_MAP = ${JSON.stringify(ALL_COMMANDS)};
 
-		function sendAction(command, action) {
+		function sendAction(command, action, extra) {
 			vscode.postMessage({
 				command: command,
-				action: action
+				action: action,
+				url: extra || (typeof action === 'string' && action.startsWith('http') ? action : undefined)
 			});
 		}
 

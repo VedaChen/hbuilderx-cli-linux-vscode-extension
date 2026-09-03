@@ -7,10 +7,10 @@ export class AppConfig {
 	}
 
 	public static getCliPath(): string {
-		return this.config.get<string>('cliPath') || '/home/momo/repository/HBuilderX/cli';
+		return (this.config.get<string>('cliPath') || '').trim();
 	}
 
 	public static getWechatDevToolsPath(): string {
-		return this.config.get<string>('wechatDevToolsPath') || '';
+		return (this.config.get<string>('wechatDevToolsPath') || '').trim();
 	}
 }
