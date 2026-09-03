@@ -707,7 +707,7 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 					<strong>账号状态</strong>: ${isLoggedIn ? `<span style="color: var(--hx-primary-hover); font-weight: 600;" title="${currentUser}">已登录 (${currentUser})</span>` : '<span>未登录</span>'}
 				</div>
 				<div class="account-actions">
-					<button class="mini-btn ${isLoggedIn ? 'disabled-btn' : ''}" onclick="handleLoginClick()" title="${isLoggedIn ? '当前账号已登录: ' + currentUser : '在侧边栏直接输入账号登录'}">
+					<button class="mini-btn ${isLoggedIn ? 'disabled-btn' : ''}" ${isLoggedIn ? 'disabled' : ''} onclick="handleLoginClick()" title="${isLoggedIn ? '当前账号已处于登录状态: ' + currentUser : '在侧边栏直接输入账号登录'}">
 						登录
 					</button>
 					<button class="mini-btn" onclick="handleLogoutClick()" title="退出当前账号">
@@ -835,7 +835,13 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 
 		<!-- uni_modules 与 UTS 面板 -->
 		<div id="tab-modules-uts" class="tab-pane ${activeTab === 'tab-modules-uts' ? 'active' : ''}">
+			<div style="display: flex; gap: 6px; margin-bottom: 10px; align-items: center;">
+				<input id="plugin-id-input" class="hbx-input" placeholder="输入插件ID" style="flex:1;" />
+				<button class="primary-btn" onclick="installPlugin(false)" style="white-space:nowrap;" title="下载并安装插件到目标工程">安装</button>
+				<button class="mini-btn danger-btn" onclick="installPlugin(true)" style="white-space:nowrap; padding: 5px 8px;" title="强制覆盖安装已存在的同名插件与依赖 (--force)">强制安装</button>
+			</div>
 			${renderCommandGrid(MODULES_UTS_PLATFORMS)}
+			<iframe id="plugin-market-iframe" src="https://ext.dcloud.net.cn/" style="width: 100%; height: calc(100vh - 380px); border: 1px solid var(--hx-card-border); border-radius: 6px; margin-top: 10px;"></iframe>
 		</div>
 	</div>
 
@@ -920,7 +926,6 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 
 		function handleLoginClick() {
 			if (isLoggedIn) {
-				toggleLogoutConfirm(true);
 				return;
 			}
 			toggleLoginForm(true);
@@ -1028,6 +1033,23 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 			vscode.postMessage({
 				command: 'selectTargetProject',
 				target: val
+			});
+		}
+
+		function installPlugin(force = false) {
+			const input = document.getElementById('plugin-id-input');
+			const value = input ? input.value.trim() : '';
+			if (!value) {
+				alert('请输入插件ID');
+				return;
+			}
+			const selectEl = document.getElementById('global-target-select');
+			const targetVal = selectEl ? selectEl.value : '';
+			vscode.postMessage({
+				command: 'installPlugin',
+				pluginIdOrUrl: value,
+				target: targetVal,
+				force: force
 			});
 		}
 	</script>

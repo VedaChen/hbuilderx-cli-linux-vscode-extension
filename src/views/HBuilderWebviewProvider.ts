@@ -3,6 +3,7 @@ import { getWebviewContent } from './template';
 import { ProjectService, HBuilderProject, getProjectPathsFromIniAsync } from '../service/projectService';
 import { UserService } from '../service/userService';
 import { CliRunner } from '../service/cliRunner';
+import { PluginInstallService } from '../service/pluginInstallService';
 
 export class HBuilderWebviewProvider implements vscode.WebviewViewProvider {
 	private _view?: vscode.WebviewView;
@@ -243,13 +244,22 @@ export class HBuilderWebviewProvider implements vscode.WebviewViewProvider {
 				case 'refresh':
 					await this.refresh(true);
 					break;
+				case 'installPlugin':
+					if (message.pluginIdOrUrl) {
+						PluginInstallService.install(message.pluginIdOrUrl, message.target || this._selectedTargetProject, !!message.force);
+					}
+					break;
 			}
 		});
 	}
 
 	public async refreshProjects(force = false): Promise<void> {
-		const newProjects = await ProjectService.fetchProjects();
-		const newHash = JSON.stringify(newProjects);
+		const [newProjects] = await Promise.all([
+			ProjectService.fetchProjects(),
+			UserService.fetchCurrentUserFromCli()
+		]);
+		const currentUser = UserService.getCurrentUser();
+		const newHash = JSON.stringify({ projects: newProjects, user: currentUser });
 
 		if (!force && newHash === this._lastProjectsHash) {
 			return;

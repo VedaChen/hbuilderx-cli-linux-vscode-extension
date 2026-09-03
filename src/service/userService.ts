@@ -149,40 +149,99 @@ export class UserService {
 		}
 
 		const safePassword = password.replace(/"/g, '\\"');
-		this.setCurrentUser(username.trim());
-		if (onSuccess) {
-			onSuccess();
-		}
-		CliRunner.runInTerminal(
-			`user login --username "${username.trim()}" --password "${safePassword}"`,
-			undefined,
-			`用户登录 (${username.trim()})`
+		vscode.window.withProgress(
+			{
+				location: vscode.ProgressLocation.Notification,
+				title: `正在登录账号 [${username.trim()}]...`,
+				cancellable: false
+			},
+			async () => {
+				try {
+					const output = await CliRunner.execAsync(`user login --username "${username.trim()}" --password "${safePassword}"`);
+					if (output.includes('0:user login:OK')) {
+						this.setCurrentUser(username.trim());
+						vscode.window.showInformationMessage(`[HBuilderX] 账号 [${username.trim()}] 登录成功`);
+						if (onSuccess) {
+							onSuccess();
+						}
+					} else {
+						vscode.window.showErrorMessage(`[HBuilderX] 登录失败: ${output || '账号或密码错误'}`);
+					}
+				} catch (err: any) {
+					vscode.window.showErrorMessage(`[HBuilderX] 登录异常: ${err?.message || err}`);
+				}
+			}
 		);
 	}
 
-	public static loginWithCredentials(username: string, password: string, onSuccess?: () => void): void {
+	public static async loginWithCredentials(username: string, password: string, onSuccess?: () => void): Promise<void> {
 		const safePassword = password.replace(/"/g, '\\"');
-		this.setCurrentUser(username.trim());
-		if (onSuccess) {
-			onSuccess();
-		}
-		CliRunner.runInTerminal(
-			`user login --username "${username.trim()}" --password "${safePassword}"`,
-			undefined,
-			`用户登录 (${username.trim()})`
+		vscode.window.withProgress(
+			{
+				location: vscode.ProgressLocation.Notification,
+				title: `正在登录账号 [${username.trim()}]...`,
+				cancellable: false
+			},
+			async () => {
+				try {
+					const output = await CliRunner.execAsync(`user login --username "${username.trim()}" --password "${safePassword}"`);
+					if (output.includes('0:user login:OK')) {
+						this.setCurrentUser(username.trim());
+						vscode.window.showInformationMessage(`[HBuilderX] 账号 [${username.trim()}] 登录成功`);
+						if (onSuccess) {
+							onSuccess();
+						}
+					} else {
+						vscode.window.showErrorMessage(`[HBuilderX] 登录失败: ${output || '账号或密码错误'}`);
+					}
+				} catch (err: any) {
+					vscode.window.showErrorMessage(`[HBuilderX] 登录异常: ${err?.message || err}`);
+				}
+			}
 		);
 	}
 
-	public static logoutDirect(onSuccess?: () => void): void {
-		this.setCurrentUser(undefined);
-		if (onSuccess) {
-			onSuccess();
+	public static async fetchCurrentUserFromCli(): Promise<string | undefined> {
+		try {
+			const output = await CliRunner.execAsync('user info');
+			if (output.includes('0:user info:OK')) {
+				const lines = output.split(/\r?\n/).map(l => l.trim()).filter(l => l && !l.includes(':user info:'));
+				if (lines.length > 0) {
+					const user = lines[0];
+					this.setCurrentUser(user);
+					return user;
+				} else {
+					this.setCurrentUser(undefined);
+					return undefined;
+				}
+			} else {
+				this.setCurrentUser(undefined);
+				return undefined;
+			}
+		} catch {
+			return this._currentUser;
 		}
-		CliRunner.runInTerminal('user logout', undefined, '用户登出');
+	}
+
+	public static async logoutDirect(onSuccess?: () => void): Promise<void> {
+		try {
+			await CliRunner.execAsync('user logout');
+			this.setCurrentUser(undefined);
+			vscode.window.showInformationMessage('[HBuilderX] 账号已登出');
+			if (onSuccess) {
+				onSuccess();
+			}
+		} catch {
+			CliRunner.runInTerminal('user logout', undefined, '用户登出');
+			this.setCurrentUser(undefined);
+			if (onSuccess) {
+				onSuccess();
+			}
+		}
 	}
 
 	public static async logout(onSuccess?: () => void): Promise<void> {
-		this.logoutDirect(onSuccess);
+		await this.logoutDirect(onSuccess);
 	}
 
 	public static getUserInfo(): void {
