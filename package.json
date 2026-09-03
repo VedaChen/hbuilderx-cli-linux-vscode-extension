@@ -3,7 +3,7 @@
   "displayName": "HBuilderX CLI GUI",
   "description": "HBuilderX Linux CLI 可视化操作工具",
   "version": "0.0.1",
-  "icon": "media/icon.svg",
+  "icon": "resources/icon.png",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -18,7 +18,7 @@
         {
           "id": "hbuilderx-cli-sidebar",
           "title": "HBuilderX CLI 控制台",
-          "icon": "media/icon.svg"
+          "icon": "resources/icon.svg"
         }
       ]
     },
@@ -27,7 +27,8 @@
         {
           "type": "webview",
           "id": "hx-actions-view",
-          "name": "HBuilderX CLI 控制台"
+          "name": "HBuilderX CLI 控制台",
+          "icon": "resources/icon.svg"
         }
       ]
     },

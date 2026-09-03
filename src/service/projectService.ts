@@ -169,8 +169,8 @@ export class ProjectService {
 
 			const items: (vscode.QuickPickItem & { project: HBuilderProject })[] = projects.map((p) => ({
 				label: `$(folder) ${p.name}`,
-				description: p.type ? `[${p.type}]` : '',
-				detail: `项目 ID: ${p.id}${p.path ? ' | ' + p.path : ''}`,
+				description: p.path || '',
+				detail: `项目 ID: ${p.id}`,
 				project: p
 			}));
 
@@ -223,7 +223,7 @@ export class ProjectService {
 			];
 
 			const chosenAction = await vscode.window.showQuickPick(actionItems, {
-				title: `项目快捷操作: ${proj.name} ${proj.type ? '(' + proj.type + ')' : ''}`,
+				title: `项目快捷操作: ${proj.name}`,
 				placeHolder: `请选择对项目 [${proj.name}] 执行的操作...`
 			});
 

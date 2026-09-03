@@ -92,6 +92,61 @@ export class HBuilderWebviewProvider implements vscode.WebviewViewProvider {
 				case 'refreshProjects':
 					await this.refreshProjects(true);
 					break;
+				case 'openWorkspaceProject':
+					const wsPath = CliRunner.getCurrentWorkspacePath();
+					if (wsPath) {
+						CliRunner.runInTerminal('project open --path __PROJECT_PATH__', wsPath, '导入当前工作区');
+						setTimeout(() => this.refreshProjects(true), 1500);
+						setTimeout(() => this.refreshProjects(true), 3500);
+					} else {
+						vscode.window.showWarningMessage('当前未打开工作区文件夹，请选择本地目录');
+						vscode.commands.executeCommand('hbuilderx-cli-gui.openProject');
+					}
+					break;
+				case 'openFolderProject':
+					vscode.window.showOpenDialog({
+						canSelectFiles: false,
+						canSelectFolders: true,
+						canSelectMany: false,
+						openLabel: '在 HBuilderX 中导入打开'
+					}).then((selected) => {
+						if (selected && selected.length > 0) {
+							CliRunner.runInTerminal('project open --path __PROJECT_PATH__', selected[0].fsPath, '打开/导入本地项目');
+							setTimeout(() => this.refreshProjects(true), 1500);
+							setTimeout(() => this.refreshProjects(true), 3500);
+						}
+					});
+					break;
+				case 'openActiveFile':
+					const activeEditor = vscode.window.activeTextEditor;
+					if (activeEditor && activeEditor.document) {
+						let filePath = activeEditor.document.fileName;
+						if (process.platform === 'win32') {
+							filePath = filePath.replace(/\\/g, '/');
+							if (/^[A-Za-z]:/.test(filePath)) {
+								filePath = `/mnt/${filePath[0].toLowerCase()}${filePath.slice(2)}`;
+							}
+						}
+						const line = activeEditor.selection.active.line + 1;
+						const col = activeEditor.selection.active.character + 1;
+						CliRunner.runInTerminal(`open --file "${filePath}:${line}:${col}"`, undefined, '在 HBuilderX 中打开当前文件');
+					} else {
+						vscode.window.showWarningMessage('当前没有处于活动状态的代码编辑器文件');
+					}
+					break;
+				case 'listProjectsInTerminal':
+					CliRunner.runInTerminal('project list', undefined, '列举所有项目');
+					break;
+				case 'openSpecificProject':
+					if (message.path || message.projectName) {
+						let tPath = message.path || message.projectName;
+						if (!tPath.startsWith('/') && !tPath.includes(':\\')) {
+							const pathMap = await getProjectPathsFromIniAsync();
+							tPath = pathMap.get(tPath) || tPath;
+						}
+						CliRunner.runInTerminal(`project open --path "${tPath}"`, undefined, `在 HBuilderX 中打开 ${message.projectName || tPath}`);
+					}
+					break;
 				case 'closeProject':
 					if (message.projectPath || message.projectName) {
 						await ProjectService.closeProject(message.projectPath || message.projectName);

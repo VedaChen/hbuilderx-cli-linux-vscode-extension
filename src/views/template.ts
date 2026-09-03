@@ -460,7 +460,7 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 			align-items: center;
 			justify-content: space-between;
 			padding: 4px 2px 8px;
-			margin-bottom: 4px;
+			margin-bottom: 6px;
 			border-bottom: 1px dashed var(--hx-card-border);
 		}
 
@@ -476,12 +476,27 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+			gap: 8px;
 		}
 
 		.proj-item-title {
 			font-weight: 600;
 			font-size: 12px;
 			color: var(--vscode-foreground);
+		}
+
+		.proj-action-btn {
+			font-size: 11px;
+			padding: 2px 6px;
+			border-radius: 4px;
+			cursor: pointer;
+			background-color: var(--vscode-button-secondaryBackground, rgba(128, 128, 128, 0.15));
+			color: var(--vscode-button-secondaryForeground, var(--vscode-foreground));
+			transition: all 0.15s ease;
+		}
+
+		.proj-action-btn:hover {
+			background-color: var(--vscode-button-secondaryHoverBackground, rgba(128, 128, 128, 0.3));
 		}
 
 		.remove-btn {
@@ -498,6 +513,14 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 		.remove-btn:hover {
 			background-color: #ef4444;
 			color: #ffffff;
+		}
+
+		.proj-path-text {
+			font-size: 10px;
+			color: var(--hx-text-muted);
+			margin-top: 4px;
+			word-break: break-all;
+			font-family: var(--vscode-editor-font-family, monospace);
 		}
 
 		.empty-hint {
@@ -546,6 +569,117 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 			justify-content: flex-end;
 			margin-top: 4px;
 		}
+
+		/* 模态弹窗样式 (Modal Dialog) */
+		.modal-overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: rgba(0, 0, 0, 0.65);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			z-index: 1000;
+			backdrop-filter: blur(2px);
+			padding: 16px;
+		}
+
+		.modal-dialog {
+			background-color: var(--vscode-editor-background);
+			border: 1px solid var(--hx-card-border);
+			border-radius: 8px;
+			width: 100%;
+			max-width: 320px;
+			box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+			overflow: hidden;
+			display: flex;
+			flex-direction: column;
+			animation: modalIn 0.18s ease-out;
+		}
+
+		@keyframes modalIn {
+			from { opacity: 0; transform: scale(0.95); }
+			to { opacity: 1; transform: scale(1); }
+		}
+
+		.modal-header {
+			padding: 10px 12px;
+			background: rgba(128, 128, 128, 0.08);
+			border-bottom: 1px solid var(--hx-card-border);
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.modal-title {
+			font-size: 12px;
+			font-weight: 600;
+			color: var(--vscode-foreground);
+		}
+
+		.modal-close-btn {
+			background: transparent;
+			border: none;
+			font-size: 16px;
+			color: var(--hx-text-muted);
+			cursor: pointer;
+			padding: 0 4px;
+			line-height: 1;
+		}
+
+		.modal-close-btn:hover {
+			color: var(--vscode-foreground);
+		}
+
+		.modal-body {
+			padding: 12px;
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+		}
+
+		.guide-section {
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+		}
+
+		.guide-title {
+			font-size: 11px;
+			font-weight: 600;
+			color: var(--hx-text-muted);
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+		}
+
+		.guide-links {
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+		}
+
+		.guide-link-item {
+			background: rgba(128, 128, 128, 0.06);
+			border: 1px solid var(--hx-card-border);
+			border-radius: 6px;
+			padding: 8px 10px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			font-size: 12px;
+			cursor: pointer;
+			color: var(--vscode-foreground);
+			transition: all 0.15s ease;
+		}
+
+		.guide-link-item:hover {
+			background: var(--hx-primary-bg);
+			border-color: var(--hx-primary);
+			color: var(--hx-primary-hover);
+			transform: translateX(2px);
+		}
 	</style>
 </head>
 <body>
@@ -554,11 +688,11 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 	<div class="header-card">
 		<div class="header-title">
 			<svg class="header-logo" viewBox="0 0 24 24">
-				<path d="M 2 2 L 22 2 L 20 19 L 12 22 L 4 19 Z M 7 6.5 V 17 H 9.5 V 13 H 14.5 V 17 H 17 V 6.5 H 14.5 V 10.5 H 9.5 V 6.5 Z"/>
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M 2 2 L 22 2 L 20 19 L 12 22 L 4 19 Z M 7 6.5 V 17 H 9.5 V 13 H 14.5 V 17 H 17 V 6.5 H 14.5 V 10.5 H 9.5 V 6.5 Z"/>
 			</svg>
 			<span>HBuilderX CLI</span>
 		</div>
-		<span class="header-tag" onclick="sendAction('showGuide')" title="点击查看帮助与官方引导">Linux</span>
+		<span class="header-tag" onclick="toggleGuideModal(true)" title="点击查看帮助与官方引导">Linux</span>
 	</div>
 
 	<!-- 1. 账号与全局配置模块（置顶常驻独立卡片） -->
@@ -615,7 +749,7 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 				? `<option value="">(暂无已导入项目，请先打开项目)</option>`
 				: projects.map((p) => {
 						const isSelected = p.name === defaultTarget || (p.path && p.path === defaultTarget);
-						return `<option value="${p.name}" ${isSelected ? 'selected' : ''}>${p.name}${p.type ? ' [' + p.type + ']' : ''}</option>`;
+						return `<option value="${p.name}" ${isSelected ? 'selected' : ''}>${p.name}</option>`;
 				  }).join('')
 			}
 		</select>
@@ -638,24 +772,36 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 	<div class="tab-content-wrapper">
 		<!-- 项目管理面板 -->
 		<div id="tab-projects" class="tab-pane ${activeTab === 'tab-projects' ? 'active' : ''}">
+			<!-- 官方项目操作快捷网格 -->
+			<div class="launch-grid" style="margin-bottom: 10px;">
+				<button class="launch-btn" onclick="sendAction('openWorkspaceProject')" title="将当前 VS Code 已打开的工程导入 HBuilderX">
+					<div class="launch-name">导入VSCode已打开</div>
+					<div class="launch-badge">project open --path [ws]</div>
+				</button>
+				<button class="launch-btn" onclick="sendAction('openFolderProject')" title="浏览并选择本地指定目录导入 HBuilderX">
+					<div class="launch-name">打开指定目录</div>
+					<div class="launch-badge">project open --path [dir]</div>
+				</button>
+			</div>
+
 			<div class="project-list-header">
-				<span style="font-size: 11px; color: var(--hx-text-muted); font-weight: 600;">已导入工程列表</span>
+				<span style="font-size: 11px; color: var(--hx-text-muted); font-weight: 600;">已导入工程列表 (${projects.length})</span>
 				<div class="header-actions">
-					<span class="link-btn" onclick="sendAction('executeAction', 'hbuilderx-cli-gui.openProject')" title="在 HBuilderX 中打开/导入项目">打开项目</span>
-					<span class="link-btn" onclick="sendAction('refreshProjects')" title="重新拉取已导入的项目列表">刷新</span>
+					<span class="link-btn" onclick="sendAction('refreshProjects')" title="重新拉取已导入的项目列表">刷新列表</span>
 				</div>
 			</div>
 			${
 				projects.length === 0
-					? `<div class="empty-hint">暂无已导入项目，点击右上角【打开项目】即可导入</div>`
+					? `<div class="empty-hint">暂无已导入项目，可点击上方按钮快速导入</div>`
 					: projects
 							.map(
 								(p) => `
 				<div class="imported-card">
 					<div class="proj-item-header">
 						<span class="proj-item-title">${p.name}</span>
-						<button class="remove-btn" onclick="removeProject(event, '${p.name}', '${p.path || ''}')" title="从 HBuilderX 中移除工程">移除</button>
+						<button class="remove-btn" onclick="removeProject(event, '${p.name}', '${p.path || ''}')" title="从 HBuilderX 中关闭/移除工程">移除</button>
 					</div>
+					${p.path ? `<div class="proj-path-text" title="${p.path}">${p.path}</div>` : ''}
 				</div>`
 							)
 							.join('')
@@ -693,6 +839,44 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 		</div>
 	</div>
 
+	<!-- 5. 引导与帮助弹窗 (Modal) -->
+	<div id="guide-modal" class="modal-overlay" style="display: none;" onclick="handleModalOverlayClick(event)">
+		<div class="modal-dialog" onclick="event.stopPropagation()">
+			<div class="modal-header">
+				<span class="modal-title">帮助与引导</span>
+				<button class="modal-close-btn" onclick="toggleGuideModal(false)" title="关闭">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="guide-section">
+					<div class="guide-title">安装与配置指南</div>
+					<div class="guide-links">
+						<div class="guide-link-item" onclick="openTutorialFromModal()">
+							<span>CLI 安装与配置教程 (本地指南)</span>
+							<span style="font-size: 11px; opacity: 0.85;">Markdown ↗</span>
+						</div>
+						<div class="guide-link-item" onclick="openExternalUrl('https://hx.dcloud.net.cn/Tutorial/install/linux-cli')">
+							<span>官方下载与安装教程</span>
+							<span style="font-size: 11px; opacity: 0.85;">hx.dcloud.net.cn ↗</span>
+						</div>
+					</div>
+				</div>
+				<div class="guide-section">
+					<div class="guide-title">官方 CLI 文档</div>
+					<div class="guide-links">
+						<div class="guide-link-item" onclick="openExternalUrl('https://hx.dcloud.net.cn/cli/README')">
+							<span>官网完整文档</span>
+							<span style="font-size: 11px; opacity: 0.85;">hx.dcloud.net.cn ↗</span>
+						</div>
+						<div class="guide-link-item" onclick="openExternalUrl('https://github.com/dcloudio/hbuilderx-extension-docs/blob/master/zh-cn/cli/README.md')">
+							<span>GitHub 开源文档</span>
+							<span style="font-size: 11px; opacity: 0.85;">github.com ↗</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<script>
 		const vscode = acquireVsCodeApi();
 		const isLoggedIn = ${isLoggedIn ? 'true' : 'false'};
@@ -703,6 +887,34 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 				command: command,
 				action: action,
 				url: extra || (typeof action === 'string' && action.startsWith('http') ? action : undefined)
+			});
+		}
+
+		function toggleGuideModal(show) {
+			const modal = document.getElementById('guide-modal');
+			if (modal) {
+				modal.style.display = show ? 'flex' : 'none';
+			}
+		}
+
+		function handleModalOverlayClick(e) {
+			if (e.target.id === 'guide-modal') {
+				toggleGuideModal(false);
+			}
+		}
+
+		function openExternalUrl(url) {
+			toggleGuideModal(false);
+			vscode.postMessage({
+				command: 'openExternal',
+				url: url
+			});
+		}
+
+		function openTutorialFromModal() {
+			toggleGuideModal(false);
+			vscode.postMessage({
+				command: 'openTutorial'
 			});
 		}
 
@@ -763,6 +975,24 @@ export function getWebviewContent(projects: HBuilderProject[] = [], activeTarget
 				command: 'closeProject',
 				projectName: projectName,
 				projectPath: projectPath
+			});
+		}
+
+		function openSpecificProject(projPathOrName) {
+			vscode.postMessage({
+				command: 'openSpecificProject',
+				path: projPathOrName
+			});
+		}
+
+		function selectTargetProjectDirect(projectName) {
+			const selectEl = document.getElementById('global-target-select');
+			if (selectEl) {
+				selectEl.value = projectName;
+			}
+			vscode.postMessage({
+				command: 'selectTargetProject',
+				target: projectName
 			});
 		}
 
