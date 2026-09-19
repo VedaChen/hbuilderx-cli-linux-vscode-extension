@@ -3,7 +3,7 @@
   "displayName": "HBuilderX CLI GUI",
   "description": "HBuilderX Linux CLI 可视化操作工具",
   "version": "0.0.1",
-  "publisher": "momo",
+  "publisher": "VedaChen",
   "license": "MIT",
   "repository": {
     "type": "git",
