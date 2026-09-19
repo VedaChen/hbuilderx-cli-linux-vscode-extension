@@ -1,0 +1,40 @@
+# HBuilderX CLI GUI 项目开发规则
+
+## 🎨 UI 视觉规范与受保护组件（严禁擅自修改）
+
+### 1. 顶部 HBuilderX 标题与概览徽标卡片
+- 保持 Webview HTML 顶部的 `.header-card` 品牌徽标结构：
+  ```html
+  <!-- 顶部标题徽标 -->
+  <div class="header-card">
+      <div class="header-title">
+          <svg class="header-logo" viewBox="0 0 24 24">
+              <path d="M 2 2 L 22 2 L 20 19 L 12 22 L 4 19 Z M 7 6.5 V 17 H 9.5 V 13 H 14.5 V 17 H 17 V 6.5 H 14.5 V 10.5 H 9.5 V 6.5 Z"/>
+          </svg>
+          <span>HBuilderX CLI</span>
+      </div>
+      <span class="header-tag" onclick="sendAction('showGuide')" title="点击查看帮助与官方引导">Linux</span>
+  </div>
+  ```
+- **保留关键视觉属性**：
+  - 品牌主色：`--hx-primary: #1A9F35`
+  - 高亮悬浮：`--hx-primary-hover: #22C55E`
+  - 半透明卡片底色：`--hx-primary-bg: rgba(26, 159, 53, 0.12)`
+  - 绿色柔和边框与圆角：`border: 1px solid rgba(26, 159, 53, 0.3); border-radius: 8px;`
+  - 盾牌 SVG 官方矢量徽标与 `Linux` 胶囊 Tag（点击调出 VS Code 原生 QuickPick 官方文档菜单）。
+
+## ⚙️ 架构与模块层级（全 Tab 化现代布局）
+1. **账号与全局配置** 保持在整个面板的第一顺位（置顶常驻独立卡片）。
+2. **全局目标工程总控** 保持在第二顺位（单个统一下拉框，全局联动生效）。
+3. **水平分段标签栏 (Tabs)**：
+   - `项目`（工程列表、打开项目、刷新、独立移除）
+   - `运行`（17 个官方运行平台网格）
+   - `发行`（官方跨端发布与打包网格）
+   - `日志`（打包与运行时日志追踪）
+   - `设备`（可用设备列表与真机/Web截图）
+   - `云开发`（uniCloud 云函数、公共模块、Schema）
+   - `插件/UTS`（uni_modules 生态与 UTS 插件独立编译）
+4. 所有操作均需通过 VS Code 标准 `postMessage` 通信。
+5. **严禁使用任何 Emoji**：严格禁止在 UI、按钮、标题、卡片、提示、控制台输出中使用任何 Emoji 表情符号。保持专业、极简的开发工具质感。
+6. **官方 CLI 文档权威参考目录**：
+   所有关于 HBuilderX Linux CLI 的指令、参数、语法、子命令（`launch`、`publish`、`pack`、`project`、`user`、`logcat`、`devices`、`screencap`、`unicloud`、`uni_modules`、`uts` 等），必须直接读取并严格参照本地克隆的官方文档目录：`/home/momo/pro/hbuilderx-extension-docs/zh-cn/cli`。
